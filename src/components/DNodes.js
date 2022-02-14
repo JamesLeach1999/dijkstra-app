@@ -10,12 +10,15 @@ const DNodes = ({name, visited}) => {
     if(visited){
       document.getElementById(name).style.color = "blue"
       document.getElementById(name).style.backgroundColor = "grey"
+    } else{
+      document.getElementById(name).style.color = "black"
+      document.getElementById(name).style.backgroundColor = "lightblue";
     }
   }, [name, visited])
   
   return (
         <div className="node" data-testid={name} id={name}>
-            {name + "\t\t"}
+            {name}
             {visited &&"HI"}
         </div>
   )

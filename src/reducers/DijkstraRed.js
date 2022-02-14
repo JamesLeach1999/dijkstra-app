@@ -209,13 +209,9 @@ const reducer = (state, action) => {
         delete node.visited
         node.visited = false
       }
-
       return node;
     });
-    console.log("\n" + visited);
-    for (const key in visited) {
-      console.log(visited[key]);
-    }
+    
     return {
       ...state,
       nodes: visited,

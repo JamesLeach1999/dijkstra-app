@@ -75,15 +75,15 @@ describe("TESTING CREATiNG A NODE", () => {
       fireEvent.change(nodeName, { target: { value: location } });
       fireEvent.click(submit);
     }
-    makeNewNode("ldn");
-    makeNewNode("prs");
-    makeNewNode("la");
+    makeNewNode("A");
+    makeNewNode("B");
+    makeNewNode("C");
 
-    var newNode1 = screen.getByTestId("ldn");
-    var newNode2 = screen.getByTestId("prs");
-    var newNode3 = screen.getByTestId("la");
-    expect(newNode1.innerHTML).toEqual("ldn");
-    expect(newNode2.innerHTML).toEqual("prs");
-    expect(newNode3.innerHTML).toEqual("la");
+    var newNode1 = screen.getByTestId("A");
+    var newNode2 = screen.getByTestId("B");
+    var newNode3 = screen.getByTestId("C");
+    expect(newNode1.innerHTML).toEqual("A");
+    expect(newNode2.innerHTML).toEqual("B");
+    expect(newNode3.innerHTML).toEqual("C");
   });
 });
