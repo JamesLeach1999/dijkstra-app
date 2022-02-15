@@ -1,9 +1,8 @@
-import React, { useReducer } from "react";
-import ReactDOM from "react-dom";
+import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { renderHook } from "@testing-library/react-hooks";
-import userEvent from "@testing-library/user-event";
+
 import MainPage from "../pages/MainPage";
+import NodeCreateSlide from "../components/NodeCreateSlide"
 let container;
 
 beforeEach(() => {
@@ -16,27 +15,18 @@ afterEach(() => {
   container = null;
 });
 
-const setup = () => {
-  render(<MainPage />);
-  const nodeName = screen.getByTestId("nodeName");
-  const submit = screen.getByTestId("makeNode");
-  const createdNode = screen.getByTestId("0");
-  return {
-    nodeName,
-    submit,
-    createdNode,
-  };
-};
 
 describe("TESTING CREATiNG A NODE", () => {
   var nodeName;
-  //   beforeEach(() => {
-  // render(<MainPage />);
-  // });
 
   test("Should input a node name", () => {
-    render(<MainPage />);
-
+    render(
+      <MainPage>
+        <NodeCreateSlide />
+      </MainPage>
+    );
+    const click = screen.getByTestId("create-slide");
+    fireEvent.click(click);
     nodeName = screen.getByTestId("node-name");
 
     fireEvent.change(nodeName, { target: { value: "ldn" } });
@@ -45,29 +35,49 @@ describe("TESTING CREATiNG A NODE", () => {
   });
 
   test("Input, create and check text content erased", () => {
-    render(<MainPage />);
+    render(
+      <MainPage>
+        <NodeCreateSlide />
+      </MainPage>
+    );
+    const click = screen.getByTestId("create-slide");
+    fireEvent.click(click);
 
     nodeName = screen.getByTestId("node-name");
     const submit = screen.getByTestId("make-node");
     fireEvent.change(nodeName, { target: { value: "ldn" } });
     fireEvent.click(submit);
 
-    expect(nodeName.value).toEqual("");
+    expect(nodeName.innerHTML).toEqual("");
   });
 
   test("Render node on page", () => {
-    render(<MainPage />);
+    render(
+      <MainPage>
+        <NodeCreateSlide />
+      </MainPage>
+    );
+    const click = screen.getByTestId("create-slide");
+    fireEvent.click(click);
 
     nodeName = screen.getByTestId("node-name");
     const submit = screen.getByTestId("make-node");
-    fireEvent.change(nodeName, { target: { value: "ldn" } });
+    fireEvent.change(nodeName, { target: { value: "A" } });
     fireEvent.click(submit);
-    var createdNode = screen.getByTestId("ldn");
-    expect(createdNode.innerHTML).toEqual("ldn");
+    var createdNode = screen.getByTestId("A");
+    expect(createdNode.innerHTML).toEqual(
+      '<div class="DialogTitle">A</div><div class="Contents"></div><button>Set edge to 55</button>'
+    );
   });
 
   test("Render another 2 nodes", () => {
-    render(<MainPage />);
+    render(
+      <MainPage>
+        <NodeCreateSlide />
+      </MainPage>
+    );
+    const click = screen.getByTestId("create-slide");
+    fireEvent.click(click);
 
     nodeName = screen.getByTestId("node-name");
     const submit = screen.getByTestId("make-node");
@@ -77,13 +87,14 @@ describe("TESTING CREATiNG A NODE", () => {
     }
     makeNewNode("A");
     makeNewNode("B");
-    makeNewNode("C");
 
     var newNode1 = screen.getByTestId("A");
     var newNode2 = screen.getByTestId("B");
-    var newNode3 = screen.getByTestId("C");
-    expect(newNode1.innerHTML).toEqual("A");
-    expect(newNode2.innerHTML).toEqual("B");
-    expect(newNode3.innerHTML).toEqual("C");
+    expect(newNode1.innerHTML).toEqual(
+      '<div class="DialogTitle">A</div><div class="Contents"></div><button>Set edge to 55</button>'
+    );
+    expect(newNode2.innerHTML).toEqual(
+      '<div class="DialogTitle">B</div><div class="Contents"></div><button>Set edge to 55</button>'
+    );
   });
 });

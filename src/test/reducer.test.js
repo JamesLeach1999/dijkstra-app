@@ -1,11 +1,7 @@
-import React, { useReducer } from "react";
-import ReactDOM from "react-dom";
-import { render, screen, fireEvent } from "@testing-library/react";
-import { renderHook } from "@testing-library/react-hooks";
-import userEvent from "@testing-library/user-event";
+import React from "react";
+import { render } from "@testing-library/react";
 import MainPage from "../pages/MainPage";
 import reducer from "../reducers/DijkstraRed";
-import { act } from "react-dom/test-utils";
 
 const initialState = {
   nodes: [],
@@ -14,9 +10,6 @@ const initialState = {
 };
 
 describe("Testing reducers", () => {
-  
-  
-
   test("Sanity check", () => {
     render(<MainPage />);
     expect(reducer(initialState, { type: "DUMMY_ACTION" })).toEqual(
@@ -35,7 +28,7 @@ describe("Testing reducers", () => {
     });
   });
 
-  test("Add 2 more ", () => {
+  test("Add 2 more", () => {
     render(<MainPage />);
     var newState = initialState;
     const node = { name: "ldn", visited: false };
@@ -57,10 +50,8 @@ describe("Testing reducers", () => {
       ],
     });
   });
-  // test("Add Edge ", () => {});
-  test("Add Edge ", () => {
+  test("Add Edge", () => {
     render(<MainPage />);
-    var newState = initialState;
     const newNode = { node1: "ldn", node2: "prs", weight: 2 };
     expect(
       reducer(initialState, { type: "ADD_EDGE", payload: newNode })
@@ -70,7 +61,4 @@ describe("Testing reducers", () => {
       journey: [],
     });
   });
-  
-  
-  
 });

@@ -8,7 +8,14 @@
 }
 
 .node{
+    width: 200px;
+    height: 200px;
     background-color: lightblue;
-    margin: 10px;
-    
+    border-radius: 10px;
+    border: 3px solid grey;
+    position: absolute !important;
+    cursor: move;
+    border-radius: 50%;
+    top: 150px;
+    left: 520px;
 }

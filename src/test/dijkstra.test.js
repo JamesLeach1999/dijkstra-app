@@ -1,33 +1,16 @@
-import React, { useReducer } from "react";
-import ReactDOM from "react-dom";
+import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { renderHook } from "@testing-library/react-hooks";
-import userEvent from "@testing-library/user-event";
+
 import MainPage from "../pages/MainPage";
 import reducer from "../reducers/DijkstraRed";
-import { act } from "react-dom/test-utils";
-
+import DNodes from "../components/DNodes"
+import NodeCreateSlide from "../components/NodeCreateSlide";
 const initialState = {
   nodes: [],
   edges: [],
   journey: [],
 };
 
-// graph.addVertex("A");
-// graph.addVertex("B");
-// graph.addVertex("C");
-// graph.addVertex("D");
-// graph.addVertex("E");
-// graph.addVertex("F");
-
-// graph.addEdge("A", "B", 4);
-// graph.addEdge("A", "C", 2);
-// graph.addEdge("B", "E", 3);
-// graph.addEdge("C", "D", 2);
-// graph.addEdge("C", "F", 4);
-// graph.addEdge("D", "E", 3);
-// graph.addEdge("D", "F", 1);
-// graph.addEdge("F", "E", 1);
 
 const newState = {
   nodes: [
@@ -58,8 +41,6 @@ describe("Testing dijkstras algo with dummy data", () => {
   });
   test("Journey algo", () => {
     render(<MainPage />);
-    const travel = { node1: "ldn", node2: "prs" };
-    var newState = initialState;
 
     expect(
       reducer(initialState, {
@@ -70,7 +51,9 @@ describe("Testing dijkstras algo with dummy data", () => {
   });
 
   test("Update nodes with state", () => {
-    render(<MainPage/>)
+    render(<MainPage><NodeCreateSlide/></MainPage>);
+    const click = screen.getByTestId("create-slide")
+    fireEvent.click(click)
     var nodeName = screen.getByTestId("node-name");
     const submit = screen.getByTestId("make-node");
     function makeNewNode(location) {
@@ -83,8 +66,6 @@ describe("Testing dijkstras algo with dummy data", () => {
     makeNewNode("D");
     makeNewNode("E");
     makeNewNode("F");
-    var nodeA = screen.getByTestId("A");
-    expect(nodeA.innerHTML).toEqual("A")
     
     expect(
       reducer(newState, { type: "TRAVEL", payload: { node1: "A", node2: "F" } })

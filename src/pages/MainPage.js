@@ -1,5 +1,6 @@
 import React, { useState, useReducer, useEffect } from "react";
 import DNodes from "../components/DNodes";
+import NodeCreateSlide from "../components/NodeCreateSlide"
 import "../components/Nodes.css";
 import reducer from "../reducers/DijkstraRed";
 const defaultState = {
@@ -41,52 +42,13 @@ const MainPage = () => {
     document.getElementById("node2").value = "";
   };
 
-  // useEffect(() => {
-  //   let frequencyCounter1 = {};
-  //   let frequencyCounter2 = {};
-
-  //   for (let index = 0; index < state.nodes.length; index++) {
-  //     // increasse key value of the result by one
-  //     frequencyCounter1[state.nodes[index]] =
-  //       (frequencyCounter1[state.nodes[index]] || 0) + 1;
-  //   }
-  //   for (let index = 0; index < state.journey.length; index++) {
-  //     frequencyCounter2[state.journey[index]] =
-  //       (frequencyCounter2[state.journey[index]] || 0) + 1;
-  //   }
-
-  //   for (let node in frequencyCounter1) {
-  //     if (!(node.name in frequencyCounter2)) {
-  //       node.visited = false;
-  //     } else {
-  //       node.visited=true;
-  //     }
-  //   }
-
-  //   console.log(state.nodes);
-
-  // }, [state])
-
   return (
     <div>
       {/* <button onClick={addNode}>Add node</button>
        */}
-      <div>
-        {state.journey &&
-          state.journey.map((node, i) => {
-            return <h1 key={i}>{node}</h1>;
-          })}
-      </div>
-      <input
-        data-testid="node-name"
-        type="text"
-        name="nodeName"
-        id="node-name"
-        onChange={(e) => setNodeName(e.target.value)}
-      />
-      <div data-testid="make-node" onClick={() => newNode()}>
-        Make node
-      </div>
+      
+      <NodeCreateSlide setNodeName={setNodeName} newNode={newNode}/>
+      
       <input
         type="text"
         name="edgeOne"
@@ -122,11 +84,20 @@ const MainPage = () => {
       <button onClick={() => dijkstra()}>Start journey</button>
       <section className="layout">
         {state.nodes.map((node, i) => {
+          var edgeNode = []
+          state.edges.map((edge) => {
+            if(edge.node1===node.name){
+              edgeNode.push(edge)
+            } else if(edge.node2 === node.name){
+              edgeNode.push(edge)
+            }
+          })
           return (
             <DNodes
               key={i}
               name={node.name}
               visited={node.visited}
+              edges={edgeNode}
             />
           );
         })}

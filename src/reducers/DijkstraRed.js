@@ -91,6 +91,7 @@ class WeightedGraph {
 
   addVertex(vertex) {
     if (!this.adjacencyList[vertex]) this.adjacencyList[vertex] = [];
+    console.log(this.adjacencyList);
     return this.adjacencyList;
   }
 
@@ -98,13 +99,38 @@ class WeightedGraph {
     if (!this.adjacencyList[vertex1] || !this.adjacencyList[vertex2]) {
       return undefined;
     }
+    console.log(this.adjacencyList);
     this.adjacencyList[vertex1].push({ node: vertex2, weight });
     this.adjacencyList[vertex2].push({ node: vertex1, weight });
 
     return this.adjacencyList;
   }
+  
+  updateEdge(v1, v2, weight){
+    if (!this.adjacencyList[v1] || !this.adjacencyList[v2]) {
+      return undefined;
+    }
+    // // this.adjacencyList[v1]
+    for (let i = 0; i < this.adjacencyList[v1].length; i++) {
+      
+      if(v2 === this.adjacencyList[v1][i].node){
+        this.adjacencyList[v1][i].weight = weight
+      }
+    }
+    for (let i = 0; i < this.adjacencyList[v2].length; i++) {
+      
+      if(v2 === this.adjacencyList[v2][i].node){
+        this.adjacencyList[v2][i].weight = weight
+      }
+    }
+    // this.adjacencyList[v2].push({ node: v1, weight });
+  
+    return this.adjacencyList;
+    
+  }
 
   dijkstras(start, finish) {
+    console.log(this.adjacencyList);
     const nodes = new Priority();
     const distances = {};
     const previous = {};
@@ -155,21 +181,38 @@ class WeightedGraph {
 
 var graph = new WeightedGraph();
 // nodes for testing purposes
-graph.addVertex("A");
-graph.addVertex("B");
-graph.addVertex("C");
-graph.addVertex("D");
-graph.addVertex("E");
-graph.addVertex("F");
+// graph.addVertex("A");
+// graph.addVertex("B");
+// graph.addVertex("C");
+// graph.addVertex("D");
+// graph.addVertex("E");
+// graph.addVertex("F");
 
-graph.addEdge("A", "B", 4);
-graph.addEdge("A", "C", 2);
-graph.addEdge("B", "E", 3);
-graph.addEdge("C", "D", 2);
-graph.addEdge("C", "F", 4);
-graph.addEdge("D", "E", 3);
-graph.addEdge("D", "F", 1);
-graph.addEdge("F", "E", 1);
+// graph.addEdge("A", "B", 4);
+// graph.addEdge("A", "C", 2);
+// graph.addEdge("B", "E", 3);
+// graph.addEdge("C", "D", 2);
+// graph.addEdge("C", "F", 4);
+// graph.addEdge("D", "E", 3);
+// graph.addEdge("D", "F", 1);
+// graph.addEdge("F", "E", 1);
+
+function adding(val){
+  graph.addVertex(val)
+}
+
+function updateEdge(v1, v2, weight){
+  graph.updateEdge(v1, v2, weight)
+}
+
+function addingEdge(val1, val2, weight){
+  graph.addEdge(val1, val2, weight)
+}
+
+function travel(v1, v2){
+  console.log(graph.dijkstras(v1, v2));
+  return graph.dijkstras(v1, v2)
+}
 
 const reducer = (state, action) => {
   if (action.type === "DUMMY_ACTION") {
@@ -177,13 +220,16 @@ const reducer = (state, action) => {
     return { ...state };
   }
   if (action.type === "ADD_NODE") {
+    console.log("numberwnag");
     const newNode = [...state.nodes, action.payload];
+    adding(action.payload.name);
     return { ...state, nodes: newNode };
   }
 
   if (action.type === "ADD_EDGE") {
+    console.log("numberwnag");
     const newEdge = [...state.edges, action.payload];
-    graph.addEdge(
+    addingEdge(
       action.payload.node1,
       action.payload.node2,
       action.payload.weight
@@ -195,27 +241,36 @@ const reducer = (state, action) => {
     };
   }
 
+  if(action.type === "UPDATE_EDGE"){
+    console.log("Update");
+    updateEdge(
+      action.payload.node1,
+      action.payload.node2,
+      action.payload.weight
+    );
+    return {...state}
+  }
+
   if (action.type === "TRAVEL") {
     state.journey = [];
     const from = action.payload.node1;
     const to = action.payload.node2;
-    const path = graph.dijkstras(from, to);
-    const returned = path;
+    const path = travel(from, to)
     var visited = state.nodes.map((node) => {
-      if (returned.indexOf(node.name) !== -1) {
+      if (path.indexOf(node.name) !== -1) {
         delete node.visited;
         node.visited = true;
       } else {
-        delete node.visited
-        node.visited = false
+        delete node.visited;
+        node.visited = false;
       }
       return node;
     });
-    
+    console.log(path);
     return {
       ...state,
       nodes: visited,
-      journey: returned,
+      journey: path,
     };
   }
 };
