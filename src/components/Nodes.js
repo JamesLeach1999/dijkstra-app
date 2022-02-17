@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Dialog.css";
-import ConnectionContext from "../context/Connection";
+import ConnectionContext from "../context/NodeContext";
 
 function Nodes({ id, show, removeNode, name }) {
 

@@ -1,6 +1,7 @@
-import React, {useState, useRef} from 'react'
-
+import React, {useState, useRef, useContext} from 'react'
+import NodeContext from '../context/NodeContext'
 const NodeCreateSlide = (props) => {
+  const {setNodeName, newNode} = useContext(NodeContext)
     const refContainer = useRef(null)
     const [clicked, setClicked] = useState(null)
     var handleClick = () => {
@@ -38,9 +39,9 @@ const NodeCreateSlide = (props) => {
             type="text"
             name="nodeName"
             id="node-name"
-            onChange={(e) => props.setNodeName(e.target.value)}
+            onChange={(e) => setNodeName(e.target.value)}
       />
-      <div data-testid="make-node" onClick={() => props.newNode()}>
+      <div data-testid="make-node" onClick={() => newNode()}>
         Make node
       </div></div> }
       

@@ -2,7 +2,7 @@ import React, {useState, Component, useContext } from "react";
 import "./MainApp.css";
 import Dialog from "../components/Dialog";
 import Nodes from "../components/Nodes";
-import ConnectionContext from "../context/Connection";
+import ConnectionContext from "../context/NodeContext";
 function MainApp(props){
 
     // var {nodes, setNodes} = useContext(ConnectionContext)

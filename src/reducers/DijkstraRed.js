@@ -197,6 +197,8 @@ var graph = new WeightedGraph();
 // graph.addEdge("D", "F", 1);
 // graph.addEdge("F", "E", 1);
 
+
+// needed since the graph adjacency list wont update when called inside reducer
 function adding(val){
   graph.addVertex(val)
 }

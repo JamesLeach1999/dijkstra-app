@@ -1,8 +1,11 @@
-import React, { useState, useReducer, useEffect } from "react";
+import React, { useState, useReducer, useEffect, useContext } from "react";
 import DNodes from "../components/DNodes";
 import NodeCreateSlide from "../components/NodeCreateSlide"
 import "../components/Nodes.css";
 import reducer from "../reducers/DijkstraRed";
+import NodeContext from "../context/NodeContext";
+import Edges from "../components/Edges";
+import JourneyComp from "../components/JourneyComp";
 const defaultState = {
   nodes: [],
   edges: [],
@@ -43,45 +46,15 @@ const MainPage = () => {
   };
 
   return (
-    <div>
+    <NodeContext.Provider value={{newNode, setNodeName, setEdgeOne, setEdgeTwo, setWeight, newEdge, setNode1, setNode2, dijkstra}}>
       {/* <button onClick={addNode}>Add node</button>
        */}
       
-      <NodeCreateSlide setNodeName={setNodeName} newNode={newNode}/>
+      <NodeCreateSlide/>
       
-      <input
-        type="text"
-        name="edgeOne"
-        id="edgeOne"
-        onChange={(e) => setEdgeOne(e.target.value)}
-      />
+      <Edges/>
       <br />
-      <input
-        type="text"
-        name="edgeTwo"
-        id="edgeTwo"
-        onChange={(e) => setEdgeTwo(e.target.value)}
-      />
-      <p>Select weight</p>
-      <input
-        type="number"
-        id="weight"
-        onChange={(e) => setWeight(e.target.value)}
-      />
-      <button onClick={() => newEdge()}>Submit edge</button>
-      <br />
-      <input
-        type="text"
-        id="node1"
-        onChange={(e) => setNode1(e.target.value)}
-      />
-      <br />
-      <input
-        type="text"
-        id="node2"
-        onChange={(e) => setNode2(e.target.value)}
-      />
-      <button onClick={() => dijkstra()}>Start journey</button>
+      <JourneyComp/>
       <section className="layout">
         {state.nodes.map((node, i) => {
           var edgeNode = []
@@ -102,7 +75,7 @@ const MainPage = () => {
           );
         })}
       </section>
-    </div>
+    </NodeContext.Provider>
   );
 };
 
