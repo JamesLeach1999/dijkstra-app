@@ -20,8 +20,10 @@ const MainPage = () => {
   const [node1, setNode1] = useState("");
   const [node2, setNode2] = useState("");
   const [weight, setWeight] = useState(0);
-  const [visited, setVisited] = useState(false);
+  const [tempEdge, setTempEdge] = useState("")
   const [state, dispatch] = useReducer(reducer, defaultState);
+  const [connecting, setConnecting] = useState([])
+  const [edgeStyles, setEdgeStyles] = useState({})
 
   const newNode = () => {
     const node = { name: nodeName, visited: false };
@@ -32,11 +34,17 @@ const MainPage = () => {
   };
 
   const newEdge = () => {
-    const edge = { node1: edgeOne, node2: edgeTwo, weight: weight };
-    dispatch({ type: "ADD_EDGE", payload: edge });
-    document.getElementById("edgeOne").value = "";
-    document.getElementById("edgeTwo").value = "";
-    document.getElementById("weight").value = "";
+    console.log(edgeOne, edgeTwo);
+    if(edgeOne !== edgeTwo){
+      const edge = { node1: edgeOne, node2: edgeTwo, weight: weight };
+      dispatch({ type: "ADD_EDGE", payload: edge });
+      setEdgeOne(null)
+      setEdgeTwo(null)
+    } else {
+      setEdgeOne(null)
+      setEdgeTwo(null)
+
+    }
   };
 
   const dijkstra = () => {
@@ -45,14 +53,22 @@ const MainPage = () => {
     document.getElementById("node2").value = "";
   };
 
+  const connectEdge = (e) => {
+    
+  };
+
+  useEffect(() => {
+    console.log(tempEdge);
+  }, [tempEdge])
+
   return (
-    <NodeContext.Provider value={{newNode, setNodeName, setEdgeOne, setEdgeTwo, setWeight, newEdge, setNode1, setNode2, dijkstra}}>
+    <NodeContext.Provider value={{newNode, setNodeName, setEdgeOne, setEdgeTwo, setWeight, newEdge, setNode1, setNode2, dijkstra,setTempEdge, connectEdge, state, edgeOne, edgeTwo}}>
       {/* <button onClick={addNode}>Add node</button>
        */}
       
       <NodeCreateSlide/>
       
-      <Edges/>
+      {/* <Edges/> */}
       <br />
       <JourneyComp/>
       <section className="layout">
@@ -71,6 +87,8 @@ const MainPage = () => {
               name={node.name}
               visited={node.visited}
               edges={edgeNode}
+              temp={tempEdge}
+              setTemp={setTempEdge}
             />
           );
         })}
